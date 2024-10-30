@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calcolatrice</title>
+</head>
+<body>
+<div clas="calcolatrice">
+    <input id="input" type="text" readonly></input>
+    <div class="operatori">
+        <button type="button" onclick="op('somma')">+</button>
+        <button type="button" onclick="op('sottr')">-</button>
+        <button type="button" onclick="op('moltip')">*</button>
+        <button type="button" onclick="op('divis')">/</button>
+        <button type="button" onclick="risultato()">=</button>
+        <button type="button" onclick="cancella()">canc</button>
+    </div>
+    <div class="numeri">
+        <button type="button" onclick="num(1)">1</button>
+        <button type="button" onclick="num(2)">2</button>
+        <button type="button" onclick="num(3)">3</button>
+    </div>
+    <div class="numeri">
+        <button type="button" onclick="num(4)">4</button>
+        <button type="button" onclick="num(5)">5</button>
+        <button type="button" onclick="num(6)">6</button>
+    </div>
+    <div class="numeri">
+        <button type="button" onclick="num(7)">7</button>
+        <button type="button" onclick="num(8)">8</button>
+        <button type="button" onclick="num(9)">9</button>
+    </div>
+    <div class="numeri">
+        <button type="button" onclick="num(0)">0</button>
+    </div>
+    <input id="risultato" type="text" readonly placeholder="risultato"></input>
+
+    <script>
+        let str = "";
+        let operatore = "";
+        let num1 = 0
+        let num2 = 0
+        let ris = 0
+        function num(num) {
+            str += num;
+            document.getElementById('input').value = str;
+        }
+
+        function op(op) {
+            operatore = op;
+            num1 = parseInt(str)
+            str = ""
+            document.getElementById('input').value = str;
+        }
+
+        function risultato(){
+            num2 = parseInt(str)
+            if (operatore == 'somma'){
+                ris = num1 + num2
+            }
+            else if (operatore == 'sottr'){
+                ris = num1 - num2
+            }
+            else if (operatore == 'moltip'){
+                ris = num1 * num2
+            }
+            else if (operatore == 'divis'){
+                ris = num1 / num2
+            }
+            document.getElementById('risultato').value = ris;
+        }
+
+        function cancella(){
+            num1 = 0
+            num2 = 0
+            str = ""
+        }
+    </script>
+</div>
+</body>
+</html>
