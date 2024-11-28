@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagrafica</title>
+
+    <style>
+        .dati{
+            display: flex;
+            background-color: rgb(152, 34, 191);
+            border-radius: 10px;
+        }
+
+        input{
+            height: 40px;
+            border: 1px solid black;
+            border-radius: 10px;
+            margin: 15px;
+            width: 100%;
+        }
+
+        button{
+            margin: 30px;
+            margin-left: 45%;
+            width: 120px;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid black;
+            font-size: 25px;
+        }
+
+        th, td{
+            border: 1px solid black;
+            height: 50px;
+            text-align: center;
+        }
+
+        .tab{
+            margin: 50px;
+            margin-top: 0px;
+        }
+
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+
+        ::placeholder{
+            text-align: center;
+        }
+
+        body{
+            background-color: rgb(218, 151, 240);
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="dati">
+        <input type="text" id="nome" placeholder="inserisci il nome">
+        <input type="text" id="cognome" placeholder="inserisci il cognome">
+        <input type="text" id="indirizzo" placeholder="inserisci l'indirizzo">
+        <input type="text" id="citta" placeholder="inserisci la città">
+    </div>
+    <div class="bottone">
+        <button onclick="aggiungiDati()">Invia</button>
+        <button onclick="pagina2()">Pagina 2</button>
+    </div>
+    <div class="tab">
+        <table id="tabella">
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Indirizzo</th>
+                <th>Città</th>
+        </table>
+    </div>
+</body>
+<script>
+    let dati = []
+
+    function aggiungiDati() {
+        const nome = document.getElementById("nome").value
+        const cognome = document.getElementById("cognome").value
+        const indirizzo = document.getElementById("indirizzo").value
+        const citta = document.getElementById("citta").value
+        if(nome != "" && cognome != "" && indirizzo != "" && citta != ""){
+            dati.push(nome, cognome, indirizzo, citta)
+            stampaTabella()
+        }
+        localStorage.setItem("tabella",dati);
+        document.getElementById("nome").value = "";
+        document.getElementById("cognome").value = "";
+        document.getElementById("citta").value = "";
+        document.getElementById("indirizzo").value = "";
+    }
+
+    function stampaTabella() {
+        document.getElementById("tabella").innerHTML += "<tr>";
+        str = ""
+        for (i = dati.length-4; i < dati.length; i++) {
+            str += "<td>" + dati[i] + "</td>";
+        }
+        document.getElementById("tabella").innerHTML += str + "</tr>";
+    }
+
+    function pagina2(){
+        location.href = "tabella.html";
+    }
+</script>
+
+</html>

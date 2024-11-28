@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tabella</title>
+
+    <style>
+
+        th, td{
+            border: 1px solid black;
+            height: 50px;
+            text-align: center;
+        }
+
+        .tab{
+            margin: 50px;
+            margin-top: 0px;
+        }
+
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+
+        body{
+            background-color: rgb(218, 151, 240);
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="tab">
+        <table id="tabella">
+                <th>Nome</th>
+                <th>Cognome</th>
+                <th>Indirizzo</th>
+                <th>Città</th>
+        </table>
+        <button onclick="tornaIndietro()">Torna alla pagina iniziale</button>
+    </div>
+</body>
+<script>
+    let datiStringa = localStorage.getItem("tabella");
+    let dati = datiStringa.split(",")
+    stampaTabella()
+
+    function stampaTabella() {
+            document.getElementById("tabella").innerHTML += "<tr>";
+            str = ""
+            for (i = 0; i < dati.length; i++) {
+                if (i % 4 == 0) {
+                    str += "</tr><tr>"
+                }
+                str += "<td>" + dati[i] + "</td>";
+            }
+            document.getElementById("tabella").innerHTML += str + "</tr>";
+    }
+
+    function tornaIndietro() {
+            location.href = "index.html";
+        }
+</script>
+
+</html>
