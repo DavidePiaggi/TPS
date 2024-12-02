@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title> Esempio di calcolatrice </title>
+
+<body>
+    <h2><b>Conversione</b></h2>
+
+    <tr> 
+        <td> <input type="text" id="str" size="10" placeholder="Inserire stringa"> </td> 
+    </tr>
+
+    <div class="radio">
+        <input type="radio" id="binario" name="conv">
+        <label>binario</label><br>
+        <input type="radio" id="ottale" name="conv">
+        <label>ottale</label><br>
+        <input type="radio" id="esadecimale" name="conv">
+        <label>esadecimale</label><br>
+    </div>
+    <br><input type="button" onclick="risultato()" value="RISULTATO"> <p id="ris"></p>
+</body>
+
+<style>
+    body{
+        font-size: 30px;
+        padding: 100px;
+        padding-left: 45%;
+        background-color: rgb(197, 197, 197);
+    }
+    input{
+        font-size: 20px;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 20px;
+        text-align: center;
+    }
+
+    
+</style>
+<script>
+    let ris = 0
+    let j = 0
+    function risultato(){
+        let str = document.getElementById("str").value
+        if(document.getElementById("binario").checked){
+            bin(str)
+            document.getElementById("ris").innerHTML = ris
+        }
+        else if(document.getElementById("ottale").checked){
+            ott(str)
+            document.getElementById("ris").innerHTML = ris
+        }
+        else if(document.getElementById("esadecimale").checked){
+            esa(str)
+            document.getElementById("ris").innerHTML = ris
+        }
+        else{
+            document.getElementById('ris').innerHTML = "Scegliere una base per la conversione.";
+        }
+        ris = 0
+        j = 0
+        document.getElementById("str").value = ""
+    }
+
+    function bin(str){
+        for (let i = str.length-1; i >= 0; i--, j++){
+            ris += (parseInt(str[i], 2) * Math.pow(2, j))
+        }
+    }
+
+    function ott(str){
+        for (let i = str.length-1; i >= 0; i--, j++){
+            ris += (parseInt(str[i], 8) * Math.pow(8, j))
+        }
+    }
+
+    function esa(str){
+        for (let i = str.length-1; i >= 0; i--, j++){
+            ris += (parseInt(str[i], 16) * Math.pow(16, j))
+        }
+    }
+
+</script>
+</html>
