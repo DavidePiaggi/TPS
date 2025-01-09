@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabella Immigrazioni</title>
+
+    <style>
+        .dati{
+            display: flex;
+            background-color: rgb(34, 120, 191);
+            border-radius: 10px;
+        }
+
+        input{
+            height: 40px;
+            border: 1px solid black;
+            border-radius: 10px;
+            margin: 15px;
+            width: 100%;
+        }
+
+        button{
+            margin: 30px;
+            margin-left: 45%;
+            width: 100px;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid black;
+            font-size:30px;
+        }
+
+        th, td{
+            border: 1px solid black;
+            height: 50px;
+            text-align: center;
+        }
+
+        .tab{
+            margin: 50px;
+            margin-top: 0px;
+        }
+
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            background-color: rgb(0, 217, 255);
+        }
+
+        ::placeholder{
+            text-align: center;
+        }
+
+        body{
+            background-color: rgb(98, 230, 240);
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="dati">
+        <input type="number" id="anno" placeholder="inserisci l'anno" onkeypress="return soloNumeri(event)">
+        <input type="number" id="sbarchi" placeholder="inserisci gli sbarchi">
+    </div>
+    <div class="bottone">
+        <button onclick="aggiungiDati()">Invia</button>
+    </div>
+    <div class="tab">
+        <table id="tabella">
+                <th>Anno</th>
+                <th>Sbarchi</th>
+        </table>
+    </div>
+</body>
+<script>
+    let dati = []
+
+    function aggiungiDati() {
+        const anno = document.getElementById("anno").value
+        const sbarchi = document.getElementById("sbarchi").value
+        if(anno != "" && sbarchi != ""){
+            dati.push(anno, sbarchi)
+            stampaTabella()
+        }
+        document.getElementById("anno").value = "";
+        document.getElementById("sbarchi").value = "";
+        dati = []
+
+    }
+
+    function stampaTabella() {
+        document.getElementById("tabella").innerHTML += "<tr>";
+        str = ""
+        for (i = 0; i < dati.length; i++) {
+            str += "<td>" + dati[i] + "</td>";
+        }
+        document.getElementById("tabella").innerHTML += str + "</tr>";
+    }
+</script>
+
+</html>
