@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabella Sbarchi2</title>
+
+    <style>
+        .dati{
+            
+            border-radius: 10px;
+            justify-content: center;
+            display: flex;
+            align-items: center;
+        }
+
+        input{
+            border: 1px solid black;
+            border-radius: 10px;
+            margin: 5px;
+        }
+
+        button{
+            margin: 30px;
+            margin-left: 45%;
+            width: 100px;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid black;
+            font-size:30px;
+        }
+
+        th, td{
+            border: 1px solid black;
+            height: 50px;
+            text-align: center;
+        }
+
+        .tab{
+            margin: 50px;
+            margin-top: 0px;
+        }
+
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            background-color: rgb(0, 217, 255);
+        }
+
+        ::placeholder{
+            text-align: center;
+        }
+
+        body{
+            background-color: rgb(98, 230, 240);
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div class="dati">
+        <input type="file" onchange="leggiFile(this)">
+    </div>
+    <div class="bottone">
+        <button onclick="creaTab(contenuto)">Invia</button>
+    </div>
+    <div class="tab">
+        <table id="tabella">
+                <th>Anno</th>
+                <th>Sbarchi</th>
+        </table>
+    </div>
+</body>
+<script>
+
+function creaTab(contenuto) {
+            let righe = contenuto.split("\n"); 
+            let tabellaHTML = "<table>";
+
+            for (let i = 0; i < righe.length; i++) {
+                let colonne = righe[i].split(","); 
+
+                tabellaHTML += "<tr>";
+                for (let j = 0; j < colonne.length; j++) {
+                    if (i == 0) {
+                        tabellaHTML += `<th>${colonne[j].slice(1, -1)}</th>`; //usare `` per utilizzare le cose scritte tra le graffe dopo il simbolo del dollaro come variabili
+                    } else {
+                        tabellaHTML += `<td>${colonne[j].slice(1, -1)}</td>`;
+                    }
+                }
+                tabellaHTML += "</tr>";
+            }
+
+            tabellaHTML += "</table>";
+            document.getElementById("tabella").innerHTML = tabellaHTML;
+        }
+
+    function leggiFile(input){
+        let file = input.files[0] //presa in input del file
+        let lettoreF = new FileReader() //creazione oggetto filereader
+        lettoreF.readAsText(file);
+        lettoreF.onload = function() {
+        let contenuto = lettoreF.result; // Contenuto del file letto
+        creaTab(contenuto)
+        }
+    }
+</script>
+
+</html>
