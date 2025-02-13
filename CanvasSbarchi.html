@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabella Sbarchi2</title>
+    <title>Canvas Sbarchi</title>
 
     <style>
         .dati{
@@ -51,22 +51,21 @@
             background-color: rgb(0, 217, 255);
         }
 
-        canvas{
-            justify-content: center;
-            display: flex;
-            align-items: center;
-            margin-left: 5%;
-            border: 1px solid black;
-            width: 800px; 
-            height: 600px;
-        }
+        canvas {
+                border: 2px solid black;
+                font: 10px Arial;
+                text-align: center;
+                margin-left: 29%;
+                background-color: antiquewhite;
+                
+            }
 
         ::placeholder{
             text-align: center;
         }
 
         body{
-            background-color: rgb(98, 230, 240);
+            background-color: rgb(242, 240, 225);
         }
         
     </style>
@@ -76,21 +75,18 @@
     <div class="dati">
         <input type="file" onchange="leggiFile(this)">
     </div>
-    <div class="bottone">
-        <button onclick="creaTab(contenuto)">Invia</button>
-    </div>
     <div class="tab">
         <table id="tabella">
                 <th>Anno</th>
                 <th>Sbarchi</th>
         </table>
     </div>
-    <canvas id="myCanvas"></canvas>
+    <canvas id="canvas" width="800" height="500"></canvas>
 </body>
 <script>
 
 function creaTab(contenuto) {
-            let righe = contenuto.split("\n"); 
+            let righe = contenuto.split("\n").slice(1); 
             let tabellaHTML = "<table>";
                 let x = [];
                 let y = [];
@@ -106,8 +102,8 @@ function creaTab(contenuto) {
             }
 
             tabellaHTML += "</table>";
-            document.getElementById("tabella").innerHTML = tabellaHTML;
-            creaCanvas(x, y)
+            document.getElementById("tabella").innerHTML += tabellaHTML;
+            creaGraf(x, y)
         }
 
     function leggiFile(input){
@@ -120,10 +116,36 @@ function creaTab(contenuto) {
         }
     }
 
-    function creaCanvas(x, y){
-        const c = document.getElementById("myCanvas");
-        const ctx = c.getContext("2d");
-    }
+    function creaGraf(x, y) {
+                const canvas = document.getElementById('canvas')
+                const ctx = canvas.getContext('2d')
+
+                const maxPersone = Math.max(...y)
+                const scaleX = (canvas.width - 100) / x.length
+                const scaleY = (canvas.height - 100) / maxPersone
+
+                ctx.beginPath()
+                ctx.moveTo(50, 50)
+                ctx.lineTo(50, canvas.height - 50)
+                ctx.lineTo(canvas.width - 50, canvas.height - 50)
+                ctx.stroke()
+
+                for (let i = 0; i < x.length; i++) {
+                    ctx.fillText(x[i], 50 + i * scaleX, canvas.height - 30)
+                }
+
+                ctx.textAlign = 'right'
+                for (let i = 0; i <= 8; i++) {
+                    ctx.fillText(i * 20000, 45, canvas.height - 50 - i * 20000 * scaleY)
+                }
+
+                ctx.beginPath()
+                ctx.moveTo(50, canvas.height - 50 - y[0] * scaleY)
+                for (let i = 1; i < x.length; i++) {
+                    ctx.lineTo(50 + i * scaleX, canvas.height - 50 - y[i] * scaleY)
+                }
+                ctx.stroke()
+            }
 </script>
 
 </html>
