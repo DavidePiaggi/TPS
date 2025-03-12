@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anagrafica con oggetti</title>
+
+    <style>
+        .dati{
+            display: flex;
+            flex-direction: column;
+            width: fit-content;
+            gap: 1rem;
+            margin: auto;
+        }
+
+        button{
+            margin: 30px;
+            margin-left: 45%;
+            width: 120px;
+            height: 50px;
+            border-radius: 10px;
+            border: 1px solid black;
+            font-size: 25px;
+        }
+
+        th, td{
+            border: 1px solid black;
+            height: 50px;
+            text-align: center;
+        }
+
+        .tab{
+            margin: 50px;
+            margin-top: 0px;
+        }
+
+        table{
+            border-collapse: collapse;
+            width: 100%;
+            background-color: white;
+        }
+
+        ::placeholder{
+            text-align: center;
+        }
+
+        body{
+            background-color: rgb(218, 151, 240);
+        }
+
+        label{
+            width: px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dati">
+        <input type="text" id="nome" placeholder="inserisci il nome">
+        <input type="text" id="cognome" placeholder="inserisci il cognome"><br>
+        <label>
+            <input type="radio" name="sesso" value="Maschio" id="m"> M
+        </label>
+        <label>
+            <input type="radio" name="sesso" value="Femmina" id="f"> F
+        </label><br>
+        <input type="text" id="indirizzo" placeholder="inserisci l'indirizzo">
+        <input type="text" id="citta" placeholder="inserisci la città">
+    </div>
+    <div class="bottone">
+        <button onclick="aggiungiDati()">Invia</button>
+        <button onclick="pagina2()">Pagina 2</button>
+    </div>
+</body>
+<script>
+    let dati = []
+
+    function aggiungiDati() {
+
+        const persona = {
+            nome: document.getElementById('nome').value,
+            cognome: document.getElementById('cognome').value,
+            indirizzo: document.getElementById('indirizzo').value,
+            citta: document.getElementById('citta').value,
+            sesso: ottieniSesso()
+        };
+        if(nome != "" && cognome != "" && indirizzo != "" && citta != ""){
+            dati.push(persona);
+            localStorage.setItem("tabella", JSON.stringify(dati));
+        }
+
+        document.getElementById('nome').value = ""
+        document.getElementById('cognome').value = ""
+        document.getElementById('indirizzo').value = ""
+        document.getElementById('citta').value = ""
+    }
+
+    function pagina2(){
+        location.href = "tabella.html";
+    }
+
+    function ottieniSesso() {
+        if(document.getElementById("m").checked)
+            return document.getElementById("m").value
+        else
+            return document.getElementById("f").value
+    }
+</script>
+
+</html>
