@@ -138,7 +138,7 @@
       let maggiorenni = [];
       for (let i = 0; i < utenti.length; i++) {
         let u = utenti[i];
-        let nascita = new Date(u.dataNascita);
+        let nascita = new Date(u.data_nascita);
         let eta = oggi.getFullYear() - nascita.getFullYear();
         let m = oggi.getMonth() - nascita.getMonth();
         if (m < 0 || (m === 0 && oggi.getDate() < nascita.getDate())) {
@@ -162,4 +162,5 @@
 }
   </script>
 </body>
+
 </html>
