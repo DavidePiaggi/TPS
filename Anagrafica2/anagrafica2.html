@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Anagrafica 5D INF</title>
+  <style>
+    html {
+      background-color: rgb(235, 227, 214);}
+    body {
+      font-family: Arial;
+      margin: 20px; }
+    table { 
+      width: 100%; 
+      margin-top: 10px; }
+    th, td { 
+      border: 1px solid rgb(0, 0, 0); 
+      padding: 8px; 
+      text-align: left; }
+    th { 
+      background-color: #d8b8b8; }
+    input { 
+      margin: 5px; }
+    button {
+      border-radius: 10px;
+      width: 100px;
+      height: 50px;}
+  </style>
+</head>
+<body>
+  <h1>Anagrafica 5D INF</h1>
+
+  <button onclick="mostraUtenti()">mostra tutti</button>
+  <br><br>
+
+  <label>filtro cognomi: </label>
+  <input type="text" id="lettera" maxlength="1">
+  <button onclick="filtroCognomi()">cerca</button>
+  <br><br>
+
+  <button onclick="mostraMaggiorenni()">mostra maggiorenni</button>
+
+  <h2>Risultato:</h2>
+  <div id="risultato"></div>
+
+  <script>
+    let utenti = [];
+
+    function caricaDati() 
+    {
+      let dati = new XMLHttpRequest();
+      dati.open("GET", "dati.xml", true);
+
+      dati.onload = function() {
+        if (dati.status === 200) {
+          var xmlDoc = this.responseXML;
+          var persone = xmlDoc.getElementsByTagName("studente");
+
+          for (x = 0; x < persone.length; x++) {
+            var nome = persone[x].getElementsByTagName("nome")[0].textContent;
+            var cognome = persone[x].getElementsByTagName("cognome")[0].textContent;
+            var data_nascita = persone[x].getElementsByTagName("data_nascita")[0].textContent;
+            var classe = persone[x].getElementsByTagName("classe")[0].textContent;
+
+            utenti.push({'nome': nome, 'cognome': cognome, 'data_nascita': data_nascita, 'classe': classe})
+          }
+          console.log(utenti);
+        }
+        else {
+          document.getElementById("output").textContent = "Errore nel caricamento del file.";
+        }
+      };
+      dati.onerror = function() {
+        document.getElementById("output").textContent = "Errore di rete!";
+      };
+
+      dati.send();
+    }
+
+    window.onload = caricaDati;
+
+    function Generazione(anno) {
+      if (anno >= 2013) return "Generazione Alpha";
+      else if (anno >= 1997) return "Generazione Z";
+      else if (anno >= 1981) return "Millennials";
+      else if (anno >= 1965) return "Generazione X";
+      else if (anno >= 1946) return "Baby Boomers";
+      else if (anno >= 1928) return "Generazione Silenziosa";
+      else return "Greatest Generation";
+    }
+
+    function mostraUtenti() {
+      if (utenti.length === 0) {
+        document.getElementById("risultato").innerHTML = "Nessun dato caricato!";
+        return;
+      }
+
+      let html = "<table><tr><th>Nome</th><th>Cognome</th><th>Data di Nascita</th><th>Generazione</th></tr>";
+      for (let i = 0; i < utenti.length; i++) {
+      let u = utenti[i];
+      let anno = new Date(u.data_nascita).getFullYear();
+      let generazione = Generazione(anno);
+      html += "<tr><td>" + u.nome + "</td><td>" + u.cognome + "</td><td>" + u.data_nascita + "</td><td>" + generazione + "</td></tr>";
+      }
+      html += "</table>";
+      document.getElementById("risultato").innerHTML = html;
+    }
+
+    function filtroCognomi() {
+  if (utenti.length === 0) {
+    document.getElementById("risultato").innerHTML = "Dati non caricati.";
+    return;
+  }
+  let lettera = document.getElementById("lettera").value.toUpperCase();
+  let filtrati = [];
+  for (let i = 0; i < utenti.length; i++) {
+    let u = utenti[i];
+    if (u.cognome.toUpperCase().startsWith(lettera)) {
+      filtrati.push(u);
+    }
+  }
+  let html = "<h3>Cognomi che iniziano con '" + lettera + "':</h3>";
+  if (filtrati.length === 0) {
+    html += "Nessun risultato.";
+  } else {
+    for (let i = 0; i < filtrati.length; i++) {
+      html += filtrati[i].cognome + "<br>";
+    }
+  }
+  document.getElementById("risultato").innerHTML = html;
+}
+
+    function mostraMaggiorenni() {
+      if (utenti.length === 0) {
+        document.getElementById("risultato").innerHTML = "Dati non caricati.";
+        return;
+      }
+      let oggi = new Date();
+      let maggiorenni = [];
+      for (let i = 0; i < utenti.length; i++) {
+        let u = utenti[i];
+        let nascita = new Date(u.dataNascita);
+        let eta = oggi.getFullYear() - nascita.getFullYear();
+        let m = oggi.getMonth() - nascita.getMonth();
+        if (m < 0 || (m === 0 && oggi.getDate() < nascita.getDate())) {
+          eta--;
+        }
+        if (eta >= 18) {
+          maggiorenni.push(u);
+        }
+      }
+      let html = "<h3>Maggiorenni:</h3>";
+      if (maggiorenni.length === 0) {
+      html += "Nessun maggiorenne trovato.";
+      } 
+      else {
+        for (let i = 0; i < maggiorenni.length; i++) {
+          let u = maggiorenni[i];
+          html += u.nome + " " + u.cognome + "<br>";
+        }
+      }
+  document.getElementById("risultato").innerHTML = html;
+}
+  </script>
+</body>
+</html>
