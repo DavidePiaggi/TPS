@@ -1,0 +1,5 @@
+id,nome,categoria,prezzo,disponibile,descrizione
+101,Power Bank 10000mAh,Elettronica,29.99,Si,Batteria esterna ad alta capacità, ideale per ricaricare smartphone e tablet in viaggio.
+102,Sedia,Casa e Arredo,18.50,Si,Sedia pieghevole e resistente in plastica riciclata, facile da riporre.
+103,Guanti Invernali,Abbigliamento,12.00,Si,Guanti in pile termico con rivestimento isolante, compatibili con schermi touch screen.
+104,Stampante 3D,Fai Da Te,250.00,No,Stampante entry-level a tecnologia FDM, adatta per progetti didattici e hobbistici.

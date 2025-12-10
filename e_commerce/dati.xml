@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<catalogo>
+    
+    <prodotto id="301">
+        <nome>iPhone 13</nome>
+        <categoria>Telefono</categoria>
+        <prezzo>300.00</prezzo>
+        <disponibile>Sì</disponibile>
+        <descrizione>Modello iconico con display Super Retina XDR e chip A15 Bionic. Ottime condizioni.</descrizione>
+    </prodotto>
+
+    <prodotto id="302">
+        <nome>iPhone X</nome>
+        <categoria>Telefono</categoria>
+        <prezzo>200.00</prezzo>
+        <disponibile>Sì</disponibile>
+        <descrizione>Il primo iPhone con Face ID e schermo OLED edge-to-edge. Un classico senza tempo.</descrizione>
+    </prodotto>
+    
+    <prodotto id="303">
+        <nome>Mouse Wireless Ergonomico</nome>
+        <categoria>Elettronica</categoria>
+        <prezzo>19.50</prezzo>
+        <disponibile>No</disponibile>
+        <descrizione>Design confortevole per lunghe sessioni di lavoro. Connessione 2.4 GHz ultra-stabile.</descrizione>
+    </prodotto>
+    
+</catalogo>

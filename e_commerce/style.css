@@ -1,0 +1,30 @@
+* {
+    margin: 1rem;
+    padding: 0;
+}
+
+body {
+    font-family: sans-serif;
+    line-height: 1.6;
+    background-color: #dedbd2;
+}
+
+.container {
+    width: 90%;
+    margin: 20px;
+}
+
+#lista-prodotti {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.prodotto-card {
+    background-color: #b0c4b1;
+    padding: 15px;
+    border: solid 2px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px #4a5759;
+    width: 15%;
+}

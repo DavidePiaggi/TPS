@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogo Prodotti</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>E-commerce TPS</h1>
+        <nav>
+            <a href="#">Carrello (0)</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <h2>Tutti i Prodotti</h2>
+            <section id="lista-prodotti">
+            </section>
+    </main>
+
+    <footer>
+        <p>Davide Piaggi</p>
+    </footer>
+</body>
+    <script>
+        let prodotti = []
+        let contatore = 0
+        function isCompleted(contatore){
+            if(contatore === 4){
+                mostraCatalogo()
+                console.log(prodotti)
+            }
+        }
+
+        const req_json = new XMLHttpRequest();
+        req_json.open("GET",'dati.json',true);
+        req_json.send();
+        req_json.onload = function(){
+        const json = JSON.parse(req_json.responseText);
+        json.forEach(oggetto_json => {
+            prodotti.push(oggetto_json); 
+        });
+        contatore++
+        isCompleted(contatore)
+        };
+
+        let req_xml = new XMLHttpRequest();
+        req_xml.open("GET", "dati.xml", true);
+        req_xml.onload = function() {
+        if (req_xml.status === 200) {
+            var xmlDoc = this.responseXML;
+            var prodotti_temp = xmlDoc.getElementsByTagName("prodotto");
+
+            Array.from(prodotti_temp).forEach(p => {
+                var id = p.getAttribute('id');
+                var nome = p.getElementsByTagName("nome")[0].textContent;
+                var categoria = p.getElementsByTagName("categoria")[0].textContent;
+                var prezzo = p.getElementsByTagName("prezzo")[0].textContent;
+                var disponibile = p.getElementsByTagName("disponibile")[0].textContent;
+                var descrizione = p.getElementsByTagName("descrizione")[0].textContent;
+
+            prodotti.push({'id': id, 'nome': nome, 'categoria': categoria, 'prezzo': prezzo, 'disponibile': disponibile, 'descrizione': descrizione})
+          });
+        }
+        else {
+          document.getElementById("output").textContent = "Errore nel caricamento del file.";
+        }
+        contatore++
+        isCompleted(contatore)
+        };
+        req_xml.send();
+
+        let req_csv = new XMLHttpRequest();
+        req_csv.open("GET", "dati.csv", true); 
+        req_csv.onload = function() {
+        if (req_csv.status === 200) {
+            const prodottiCSV = parseCSV_txt(req_csv.responseText);
+            prodottiCSV.forEach(p => {
+            prodotti.push(p);
+        });
+        } else {
+            console.error("Errore nel caricamento del file CSV.");
+        }
+        contatore++
+        isCompleted(contatore)
+        };
+        req_csv.send();
+
+        function parseCSV_txt(CSVstringa){
+            let prodotti_parse = []
+
+            let righe = CSVstringa.split('\n')
+            let chiavi = righe[0].split(',')
+            for(let i = 1; i < righe.length; i++){
+                let valori = righe[i].split(',')
+                let prodotto = {}
+
+                chiavi.forEach((chiave, indice) => {
+                    prodotto[chiave] = valori[indice]
+
+            })
+            prodotti_parse.push(prodotto)
+            }
+            return prodotti_parse
+        }
+
+        let req_txt = new XMLHttpRequest();
+        req_txt.open("GET", "dati.txt", true); 
+        req_txt.onload = function() {
+        if (req_txt.status === 200) {
+            const prodottiTXT = parseCSV_txt(req_txt.responseText);
+            prodottiTXT.forEach(p => {
+            prodotti.push(p);
+        });
+        } else {
+            console.error("Errore nel caricamento del file txt.");
+        }
+        contatore++
+        isCompleted(contatore)
+        };
+
+        function mostraCatalogo() {
+        const contenitore = document.getElementById('lista-prodotti');
+        let htmlProdotti = '';
+
+        prodotti.forEach(prodotto => {
+            htmlProdotti += '<div class="prodotto-card">' + 
+                '<h3>' + prodotto.nome + '</h3>' +
+                '<p>Categoria: ' + prodotto.categoria + '</p>' +
+                '<p class="prezzo">' + prodotto.prezzo + '</p>' +
+                '<a href="dettaglio.html?id=' + prodotto.id + '" class="btn">Vedi Dettagli</a>' +
+                '</div>'
+        });
+
+            contenitore.innerHTML = htmlProdotti;
+        }   
+    </script>
+</html>
