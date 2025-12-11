@@ -55,14 +55,13 @@
             var prodotti_temp = xmlDoc.getElementsByTagName("prodotto");
 
             Array.from(prodotti_temp).forEach(p => {
-                var id = p.getAttribute('id');
                 var nome = p.getElementsByTagName("nome")[0].textContent;
                 var categoria = p.getElementsByTagName("categoria")[0].textContent;
                 var prezzo = p.getElementsByTagName("prezzo")[0].textContent;
                 var disponibile = p.getElementsByTagName("disponibile")[0].textContent;
                 var descrizione = p.getElementsByTagName("descrizione")[0].textContent;
 
-            prodotti.push({'id': id, 'nome': nome, 'categoria': categoria, 'prezzo': prezzo, 'disponibile': disponibile, 'descrizione': descrizione})
+            prodotti.push({'nome': nome, 'categoria': categoria, 'prezzo': prezzo, 'disponibile': disponibile, 'descrizione': descrizione})
           });
         }
         else {
@@ -132,7 +131,7 @@
                 '<h3>' + prodotto.nome + '</h3>' +
                 '<p>Categoria: ' + prodotto.categoria + '</p>' +
                 '<p class="prezzo">' + prodotto.prezzo + '</p>' +
-                '<a href="dettaglio.html?id=' + prodotto.id + '" class="btn">Vedi Dettagli</a>' +
+                '<a href="dettaglio.html" class="btn">Vedi Dettagli</a>' +
                 '</div>'
         });
 

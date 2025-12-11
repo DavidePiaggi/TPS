@@ -1,6 +1,5 @@
 [
   {
-    "id": 201,
     "nome": "Samsung z-fold 7",
     "categoria": "Elettronica",
     "prezzo": 1200.00,
@@ -8,7 +7,6 @@
     "descrizione": "Smartphone pieghevole di ultima generazione con schermo Dynamic AMOLED 2X e funzionalità multi-tasking avanzate."
   },
   {
-    "id": 202,
     "nome": "Maglietta in Cotone",
     "categoria": "Abbigliamento",
     "prezzo": 24.50,
@@ -16,7 +14,6 @@
     "descrizione": "Maglietta classica in cotone organico al 100%. Vestibilità regular, disponibile in vari colori."
   },
   {
-    "id": 203,
     "nome": "Set di Pennelli",
     "categoria": "Arte e Hobbies",
     "prezzo": 15.90,
@@ -24,7 +21,6 @@
     "descrizione": "Kit professionale di 12 pennelli in pelo sintetico, ideali per acrilico e acquerello."
   },
   {
-    "id": 204,
     "nome": "Cuffie Bluetooth",
     "categoria": "Elettronica",
     "prezzo": 79.00,

@@ -1,5 +1,5 @@
-id,nome,categoria,prezzo,disponibile,descrizione
-105,Penna Stilografica,Cancelleria,45.00,Si,Elegante penna stilografica con pennino in acciaio inossidabile, perfetta per una scrittura fluida.
-106,Poster,Arredamento,14.99,Si,Poster artistico con stampa di alta qualità. Varie dimensioni disponibili.
-107,Tenda da Campeggio,Outdoor,120.50,No,Tenda spaziosa per 4 persone, resistente all'acqua e facile da montare.
-108,Kit di Attrezzi Base,Fai Da Te,28.00,Si,Set essenziale di attrezzi per piccole riparazioni domestiche, include martello e cacciaviti.
+nome,categoria,prezzo,disponibile,descrizione
+Penna Stilografica,Cancelleria,45.00,Si,Elegante penna stilografica con pennino in acciaio inossidabile perfetta per una scrittura fluida.
+Poster,Arredamento,14.99,Si,Poster artistico con stampa di alta qualità.
+Tenda da Campeggio,Outdoor,120.50,No,Tenda spaziosa per 4 persone resistente all'acqua e facile da montare.
+Kit di Attrezzi Base,Fai Da Te,28.00,Si,Set essenziale di attrezzi per piccole riparazioni domestiche.
