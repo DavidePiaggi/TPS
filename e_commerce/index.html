@@ -131,13 +131,16 @@
                 '<h3>' + prodotto.nome + '</h3>' +
                 '<p>Categoria: ' + prodotto.categoria + '</p>' +
                 '<p class="prezzo">' + prodotto.prezzo + '</p>' +
-                '<button onclick="dettaglio(prodotto)">Mostra Dettagli</button>' +
+                '<button onclick="dettaglio(' + prodotto + ')">Mostra Dettagli</button>' +
                 '</div>'
         });
 
             contenitore.innerHTML = htmlProdotti;
         }
 
+        function dettaglio(prodotto){
+            consoe.log(here)
+        }
 
     </script>
 
