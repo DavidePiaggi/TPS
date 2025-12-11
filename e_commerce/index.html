@@ -131,7 +131,7 @@
                 '<h3>' + prodotto.nome + '</h3>' +
                 '<p>Categoria: ' + prodotto.categoria + '</p>' +
                 '<p class="prezzo">' + prodotto.prezzo + '</p>' +
-                '<button onclick="dettaglio("' + JSON.strigify(prodotto) + '"")">Mostra Dettagli</button>' +
+                '<button onclick="dettaglio("' + JSON.stringify(prodotto) + '"")">Mostra Dettagli</button>' +
                 '</div>'
         });
 
