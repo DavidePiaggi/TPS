@@ -131,7 +131,7 @@
                 '<h3>' + prodotto.nome + '</h3>' +
                 '<p>Categoria: ' + prodotto.categoria + '</p>' +
                 '<p class="prezzo">' + prodotto.prezzo + '</p>' +
-                '<button onclick="dettaglio(' + prodotto + ')">Mostra Dettagli</button>' +
+                '<button onclick="dettaglio("' + JSON.strigify(prodotto) + '"")">Mostra Dettagli</button>' +
                 '</div>'
         });
 
@@ -139,7 +139,9 @@
         }
 
         function dettaglio(prodotto){
-            console.log(here)
+            const p = JSON.parse(prodotto);
+            localStorage.setItem("prodotto", p);
+            window.location.href = 'dettaglio.html'
         }
 
     </script>
