@@ -131,12 +131,14 @@
                 '<h3>' + prodotto.nome + '</h3>' +
                 '<p>Categoria: ' + prodotto.categoria + '</p>' +
                 '<p class="prezzo">' + prodotto.prezzo + '</p>' +
-                '<a href="dettaglio.html" class="btn">Vedi Dettagli</a>' +
+                '<button onclick="dettaglio(prodotto)">Mostra Dettagli</button>' +
                 '</div>'
         });
 
             contenitore.innerHTML = htmlProdotti;
-        }   
+        }
+
+
     </script>
 
 </html>
