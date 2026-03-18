@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="StockService"
+             targetNamespace="http://example.com/stockservice"
+             xmlns:tns="http://example.com/stockservice"
+             xmlns:soap="http://schemas.xmlsoap.org/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+  <message name="GetStockRequest">
+    <part name="symbol" type="xsd:string"/>
+  </message>
+  <message name="GetStockResponse">
+    <part name="history" type="xsd:string"/>
+  </message>
+
+  <message name="CurrentPriceRequest">
+    <part name="symbol" type="xsd:string"/>
+  </message>
+  <message name="CurrentPriceResponse">
+    <part name="currentData" type="xsd:string"/> 
+  </message>
+
+  <portType name="StockPortType">
+    <operation name="GetStockHistory">
+      <input message="tns:GetStockRequest"/>
+      <output message="tns:GetStockResponse"/>
+    </operation>
+    <operation name="GetCurrentPrice">
+      <input message="tns:CurrentPriceRequest"/>
+      <output message="tns:CurrentPriceResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="StockBinding" type="tns:StockPortType">
+    <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetStockHistory">
+      <soap:operation soapAction="GetStockHistory"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+    <operation name="GetCurrentPrice">
+      <soap:operation soapAction="GetCurrentPrice"/>
+      <input><soap:body use="literal"/></input>
+      <output><soap:body use="literal"/></output>
+    </operation>
+  </binding>
+
+  <service name="StockService">
+    <port name="StockPort" binding="tns:StockBinding">
+      <soap:address location="http://localhost:8000/stock"/>
+    </port>
+  </service>
+</definitions>

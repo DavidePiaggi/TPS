@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Analisi Titoli Pro - SOAP</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f8f9fa; padding: 20px; margin: 0; }
+        .container { max-width: 900px; margin: 20px auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        h1 { text-align: center; color: #202124; margin-bottom: 25px; }
+        .controls { text-align: center; margin-bottom: 30px; }
+        select { padding: 12px 25px; font-size: 16px; border-radius: 8px; border: 1px solid #ddd; cursor: pointer; }
+        
+        .chart-container { height: 350px; margin-bottom: 25px; }
+
+        /* Stile sezioni info (Rendimento e Prezzo Attuale) */
+        .info-sections { display: flex; gap: 20px; margin-bottom: 20px; }
+        .info-card { flex: 1; padding: 20px; border-radius: 10px; text-align: center; transition: 0.3s; border: 1px solid #eee; }
+        
+        /* Rendimento */
+        .yield-box { font-size: 1.3rem; font-weight: bold; }
+        .positive { background: #e6f4ea; color: #137333; border-color: #34a853; }
+        .negative { background: #fce8e6; color: #c5221f; border-color: #ea4335; }
+
+        /* Prezzo Attuale */
+        .current-price-box { background: #e8f0fe; color: #174ea6; border-color: #1a73e8; }
+        .price-display { font-size: 2rem; font-weight: bold; margin: 10px 0; }
+        .currency-btn { 
+            padding: 8px 15px; background: #1a73e8; color: white; border: none; 
+            border-radius: 5px; cursor: pointer; font-size: 0.9rem; transition: background 0.2s;
+        }
+        .currency-btn:hover { background: #1557b0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Dashboard Finanziaria (SOAP)</h1>
+    
+    <div class="controls">
+        <select id="stockSelector" onchange="updateDashboard()">
+    <optgroup label="Azioni">
+        <option value="AAPL">Apple (AAPL)</option>
+        <option value="MSFT">Microsoft (MSFT)</option>
+        <option value="GOOGL">Google (GOOGL)</option>
+        <option value="NVDA">NVIDIA (NVDA)</option>
+        <option value="AMD">AMD</option>
+    </optgroup>
+    <optgroup label="Indici ed ETF">
+        <option value="VWCE">Vanguard All-World (VWCE)</option>
+        <option value="NASDAQ">Nasdaq 100 (QQQ)</option>
+        <option value="SPY">S&P 500 (SPY)</option>
+    </optgroup>
+        </select>
+    </div>
+
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <div class="info-sections">
+        <div id="yieldDisplay" class="info-card yield-box positive">
+            Calcolo rendimento...
+        </div>
+
+        <div class="info-card current-price-box">
+            <div style="font-weight:bold;">Valore al 27 febbraio 2026</div>
+            <div id="priceDisplay" class="price-display">-- USD</div>
+            <button id="currencyBtn" class="currency-btn" onclick="toggleCurrency()">Visualizza in EUR</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let myChart;
+    // Variabili globali per gestire lo stato della valuta attuale
+    let currentUsdPrice = 0;
+    let exchangeRate = 0;
+    let isEur = false;
+
+    // Funzione principale che aggiorna tutto
+    async function updateDashboard() {
+        const symbol = document.getElementById('stockSelector').value;
+        
+        // Resettiamo lo stato della valuta a USD quando cambiamo azione
+        isEur = false; 
+        document.getElementById('currencyBtn').innerText = "Visualizza in EUR";
+
+        // Eseguiamo le due chiamate SOAP in parallelo per efficienza
+        await Promise.all([
+            updateHistoricalChart(symbol),
+            updateCurrentPrice(symbol)
+        ]);
+    }
+
+    // --- LOGICA 1: Grafico Storico e Rendimento (Esistente) ---
+    async function updateHistoricalChart(symbol) {
+        const yieldDisplay = document.getElementById('yieldDisplay');
+        try {
+            const response = await callSoapApi('GetStockHistory', `<symbol>${symbol}</symbol>`);
+            const data = JSON.parse(extractJsonFromSoap(response, "history"));
+
+            // Calcolo Rendimento
+            const initial = data.prices[0];
+            const final = data.prices[data.prices.length - 1];
+            const totalReturn = (((final - initial) / initial) * 100).toFixed(2);
+            yieldDisplay.innerText = `Rendimento Storico (5 anni): ${totalReturn}%`;
+            yieldDisplay.className = `info-card yield-box ${totalReturn >= 0 ? 'positive' : 'negative'}`;
+
+            // Grafico
+            if (myChart) myChart.destroy();
+            myChart = new Chart(document.getElementById('myChart').getContext('2d'), {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [{
+                        label: `Quotazione ${symbol} (USD)`,
+                        data: data.prices,
+                        borderColor: '#1a73e8',
+                        backgroundColor: 'rgba(26, 115, 232, 0.05)',
+                        fill: true, tension: 0.3, pointRadius: 5
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        } catch (e) { console.error(e); yieldDisplay.innerText = "Errore dati storici"; }
+    }
+
+    // --- LOGICA 2: Prezzo Attuale e Conversione (NUOVA) ---
+    async function updateCurrentPrice(symbol) {
+        const priceDisplay = document.getElementById('priceDisplay');
+        try {
+            // Chiamata alla NUOVA operazione SOAP
+            const response = await callSoapApi('GetCurrentPrice', `<symbol>${symbol}</symbol>`);
+            const data = JSON.parse(extractJsonFromSoap(response, "currentData"));
+
+            // Salviamo i dati globalmente per la conversione
+            currentUsdPrice = data.priceUsd;
+            exchangeRate = data.exchangeRate;
+
+            // Visualizzazione iniziale in USD
+            displayPrice();
+        } catch (e) { console.error(e); priceDisplay.innerText = "Errore prezzo"; }
+    }
+
+    // Funzione per mostrare il prezzo nella valuta corretta
+    function displayPrice() {
+        const priceDisplay = document.getElementById('priceDisplay');
+        if (isEur) {
+            const priceEur = (currentUsdPrice * exchangeRate).toFixed(2);
+            priceDisplay.innerText = `€ ${priceEur} EUR`;
+        } else {
+            priceDisplay.innerText = `$ ${currentUsdPrice.toFixed(2)} USD`;
+        }
+    }
+
+    // Funzione chiamata dal pulsante
+    function toggleCurrency() {
+        isEur = !isEur; // Inverte lo stato
+        const btn = document.getElementById('currencyBtn');
+        btn.innerText = isEur ? "Visualizza in USD" : "Visualizza in EUR";
+        displayPrice();
+    }
+
+    // --- UTILITY: Funzioni comuni per SOAP ---
+    async function callSoapApi(operation, bodyContent) {
+        const response = await fetch('/stock', {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/xml' },
+            body: `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tns="http://example.com/stockservice">
+                <soap:Body><tns:${operation}>${bodyContent}</tns:${operation}></soap:Body>
+            </soap:Envelope>`
+        });
+        return await response.text();
+    }
+
+    function extractJsonFromSoap(xmlText, tagName) {
+        const parser = new DOMParser();
+        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+        const node = xmlDoc.getElementsByTagNameNS("*", tagName)[0];
+        return node.textContent || node.text;
+    }
+
+    // Avvio automatico
+    window.onload = updateDashboard;
+</script>
+</body>
+</html>
